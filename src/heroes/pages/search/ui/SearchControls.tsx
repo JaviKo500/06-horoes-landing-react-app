@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Filter, Grid, Plus, Search, SortAsc } from "lucide-react"
@@ -73,6 +74,17 @@ export const SearchControls = () => {
             </div>
             <div className="block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors" />
           </div>
+        </div>
+      </div>
+
+      {/* Results info */}
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-4">
+          <p className="text-gray-600">Showing 6 of 16 characters</p>
+          <Badge variant="secondary" className="flex items-center gap-1">
+            <Filter className="h-3 w-3" />
+            Filtered
+          </Badge>
         </div>
       </div>
     </>
