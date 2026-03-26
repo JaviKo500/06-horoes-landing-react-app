@@ -8,6 +8,7 @@ import { CustomJumbotron } from "@/components/custom/CustomJumbotron"
 import { HeroStats } from "@/heroes/components/HeroStats"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
 import { CustomPagination } from "@/components/custom/CustomPagination"
+import { CustomBreadcrumb } from "@/components/custom/CustomBreadcrumb"
 
 export const HomePage = () => {
 
@@ -20,6 +21,9 @@ export const HomePage = () => {
     <>
         {/* Header */}
         <CustomJumbotron title="Superhero Universe" subtitle="Discover, explore, and manage your favorite superheroes and villains" />
+
+        {/* Breadcrumb */}
+        <CustomBreadcrumb  currentPage="Super Hero"  breadcrumbs={[]}/>
 
         {/* Stats Dashboard */}
         <HeroStats />
