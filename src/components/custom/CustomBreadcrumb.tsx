@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { useLocation, Link } from 'react-router';
+import { Link } from 'react-router';
 
 interface BreadcrumbItemProps {
   label: string;
@@ -18,9 +18,7 @@ interface Props {
 }
 
 export const CustomBreadcrumb = ( { currentPage, breadcrumbs = [] }: Props ) => {
-  const {state} = useLocation();
-  console.log('<--------------- JK CustomBreadcrumb --------------->');
-  console.log(state);
+  // const {state} = useLocation();
   return (
      <Breadcrumb className="my-4">
       <BreadcrumbList>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import {
   Heart,
@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CustomJumbotron } from "@/components/custom/CustomJumbotron"
 import { HeroStats } from "@/heroes/components/HeroStats"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
+import { useQuery } from "@tanstack/react-query"
+
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumb } from "@/components/custom/CustomBreadcrumb"
 import { getHeroByPageAction } from "@/heroes/actions/get-hero-by-page.action"
@@ -17,11 +19,15 @@ export const HomePage = () => {
   'all' | 'favorites' | 'heroes' | 'villains'
   >('all');
   
-  useEffect(() => {
-    getHeroByPageAction().then(data => {
-      console.log(data)
-    })
-  }, [])
+  const { data } = useQuery({
+    queryKey: [ 'heroes' ],
+    queryFn: () => getHeroByPageAction(),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  // useEffect(() => {
+  //   getHeroByPageAction().then();
+  // }, [])
   
   return (
     <>
