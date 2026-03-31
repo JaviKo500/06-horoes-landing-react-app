@@ -25,6 +25,8 @@ export const HomePage = () => {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
+  console.log('<--------------- JK HomePage --------------->');
+  console.log(data);
   // useEffect(() => {
   //   getHeroByPageAction().then();
   // }, [])
