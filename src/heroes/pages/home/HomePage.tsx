@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import {
   Heart,
@@ -9,6 +9,7 @@ import { HeroStats } from "@/heroes/components/HeroStats"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumb } from "@/components/custom/CustomBreadcrumb"
+import { getHeroByPageAction } from "@/heroes/actions/get-hero-by-page.action"
 
 export const HomePage = () => {
 
@@ -16,7 +17,12 @@ export const HomePage = () => {
   'all' | 'favorites' | 'heroes' | 'villains'
   >('all');
   
-
+  useEffect(() => {
+    getHeroByPageAction().then(data => {
+      console.log(data)
+    })
+  }, [])
+  
   return (
     <>
         {/* Header */}
