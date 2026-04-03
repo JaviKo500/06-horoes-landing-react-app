@@ -1,4 +1,5 @@
 import { Heart, Eye, Zap, Brain, Gauge, Shield } from "lucide-react"
+import { useNavigate } from "react-router"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -11,13 +12,20 @@ export interface HeroGridCardProps {
 }
 
 export const HeroGridCard = ( { hero }: HeroGridCardProps ) => {
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/hero/${hero.slug}`);
+  }
   return (
     <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-linear-to-br from-white to-gray-50">
-      <div className="relative h-64 overflow-hidden">
+      <div className="relative h-64">
         <img
           src={hero.image}
           alt={hero.alias}
-          className="object-cover transition-all duration-500 group-hover:scale-110"
+          onClick={handleClick}
+          className="object-cover transition-all duration-500 group-hover:scale-100 absolute -top-7.5 w-full h-100"
         />
 
         {/* Status indicator */}
@@ -52,7 +60,7 @@ export const HeroGridCard = ( { hero }: HeroGridCardProps ) => {
         </Button>
       </div>
 
-      <CardHeader className="pb-3">
+      <CardHeader className="py-3 z-10 bg-gray-100/50 backdrop-blur-sm relative top-1 group-hover:-top-2.5 transition-all duration-300">
         <div className="flex justify-between items-start">
           <div className="space-y-1">
             <h3 className="font-bold text-lg leading-tight">{hero.alias}</h3>

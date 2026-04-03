@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Shield, Zap, Brain, Gauge, Users, Star, Award } from "lucide-react"
+import { useParams } from "react-router"
 
 const superheroData = {
   id: "1",
@@ -52,6 +53,7 @@ export const HeroPage = () => {
         return "bg-gray-500"
     }
   }
+  const {slug = ''} = useParams();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -86,7 +88,7 @@ export const HeroPage = () => {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-bold mb-2">{superheroData.alias}</h1>
-              <p className="text-xl text-blue-200 mb-4">{superheroData.name}</p>
+              <p className="text-xl text-blue-200 mb-4">{slug}</p>
               <p className="text-lg text-gray-300 max-w-2xl">{superheroData.description}</p>
             </div>
 

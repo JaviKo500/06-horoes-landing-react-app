@@ -5,7 +5,7 @@ import { HomePage } from '@/heroes/pages/home/HomePage';
 import { HeroPage } from '@/heroes/pages/hore/HeroPage';
 import { lazy } from 'react';
 // import { SearchPage } from '@/heroes/pages/search/SearchPage';
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 
 const SearchPage = lazy( () => 
   import('@/heroes/pages/search/SearchPage') 
@@ -20,7 +20,7 @@ export const appRouter = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: 'hero/1',
+        path: 'hero/:slug',
         element: <HeroPage />,
       },
       {
@@ -41,6 +41,6 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: '/*',
-    element: <HomePage />,
+    element: <Navigate to="/" />,
   }
 ]);
