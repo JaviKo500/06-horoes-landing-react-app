@@ -21,13 +21,20 @@ export const HomePage = () => {
   const activeTab = searchParams.get('tab') || 'all';
   const page = parseInt( searchParams.get('page') || '1' );
   const limit = parseInt( searchParams.get('limit') || '6' );
+  const category = searchParams.get('category') || 'all';
 
   const selectedTab = useMemo(() => {
     const validTabs = ['all', 'favorites', 'heroes', 'villains'];
     return validTabs.includes(activeTab) ? activeTab : 'all';
   }, [ activeTab ] );
 
-  const { data: heroesResponse } = usePaginationHeroes({ page, limit });
+  const selectedCategory = useMemo(() => {
+    const validCategories = ['all', 'hero', 'villain'];
+    return validCategories.includes(category) ? category : 'all';
+  }, [ category ] );
+  
+
+  const { data: heroesResponse } = usePaginationHeroes({ page, limit, category: selectedCategory });
 
   const { data: summaryData } = useHeroSummary();
 
@@ -38,8 +45,22 @@ export const HomePage = () => {
   // }, [])
   
   const setActiveTab = ( tab: string ) => {
+    let category = 'all';
+    switch (tab) {
+      case 'villains':
+        category = 'villain';
+        break;
+      case 'heroes':
+        category = 'hero';
+        break;
+      default:
+        category = 'all';
+        break;
+    }
     setSearchParams(( prev ) => {
       prev.set('tab', tab);
+      prev.set('category', category);
+      prev.set('page', '1');
       return prev;
     });
   }
@@ -76,11 +97,11 @@ export const HomePage = () => {
           </TabsContent>
           <TabsContent value="heroes">
             {/* Character Grid */}
-            <HeroGrid />
+            <HeroGrid heroes={heroesResponse?.heroes} />
           </TabsContent>
           <TabsContent value="villains">
             {/* Character Grid */}
-            <HeroGrid />
+            <HeroGrid heroes={heroesResponse?.heroes} />
           </TabsContent>
         </Tabs>
 
