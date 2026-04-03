@@ -19,6 +19,9 @@ export const HomePage = () => {
   const [ searchParams, setSearchParams ] = useSearchParams();
   
   const activeTab = searchParams.get('tab') || 'all';
+  const page = parseInt( searchParams.get('page') || '1' );
+  const limit = parseInt( searchParams.get('limit') || '6' );
+
   const selectedTab = useMemo(() => {
     const validTabs = ['all', 'favorites', 'heroes', 'villains'];
     return validTabs.includes(activeTab) ? activeTab : 'all';
@@ -26,7 +29,7 @@ export const HomePage = () => {
 
   const { data: heroesResponse } = useQuery({
     queryKey: [ 'heroes' ],
-    queryFn: () => getHeroByPageAction(),
+    queryFn: () => getHeroByPageAction( page, limit ),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -49,7 +52,7 @@ export const HomePage = () => {
         <CustomJumbotron title="Superhero Universe" subtitle="Discover, explore, and manage your favorite superheroes and villains" />
 
         {/* Breadcrumb */}
-        <CustomBreadcrumb  currentPage="Super Hero"  breadcrumbs={[]}/>
+        <CustomBreadcrumb  currentPage=""  breadcrumbs={[]}/>
 
         {/* Stats Dashboard */}
         <HeroStats />
@@ -85,7 +88,7 @@ export const HomePage = () => {
         </Tabs>
 
         {/* Pagination */}
-        <CustomPagination totalPages={4} />
+        <CustomPagination totalPages={heroesResponse?.pages ?? 1} page={page} />
       </>
   )
 }
