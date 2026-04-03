@@ -1,9 +1,9 @@
-import { useState } from "react"
-
 import {
   Heart,
 } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useSearchParams } from "react-router"
+
 import { CustomJumbotron } from "@/components/custom/CustomJumbotron"
 import { HeroStats } from "@/heroes/components/HeroStats"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
@@ -12,13 +12,18 @@ import { useQuery } from "@tanstack/react-query"
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumb } from "@/components/custom/CustomBreadcrumb"
 import { getHeroByPageAction } from "@/heroes/actions/get-hero-by-page.action"
+import { useMemo } from "react"
 
 export const HomePage = () => {
 
-  const [activeTab, setActiveTab] = useState<
-  'all' | 'favorites' | 'heroes' | 'villains'
-  >('all');
+  const [ searchParams, setSearchParams ] = useSearchParams();
   
+  const activeTab = searchParams.get('tab') || 'all';
+  const selectedTab = useMemo(() => {
+    const validTabs = ['all', 'favorites', 'heroes', 'villains'];
+    return validTabs.includes(activeTab) ? activeTab : 'all';
+  }, [ activeTab ] );
+
   const { data: heroesResponse } = useQuery({
     queryKey: [ 'heroes' ],
     queryFn: () => getHeroByPageAction(),
@@ -31,6 +36,13 @@ export const HomePage = () => {
   //   getHeroByPageAction().then();
   // }, [])
   
+  const setActiveTab = ( tab: string ) => {
+    setSearchParams(( prev ) => {
+      prev.set('tab', tab);
+      return prev;
+    });
+  }
+
   return (
     <>
         {/* Header */}
@@ -44,7 +56,7 @@ export const HomePage = () => {
 
 
         {/* Tabs */}
-        <Tabs value={activeTab} className="mb-8">
+        <Tabs value={selectedTab} className="mb-8">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="all" onClick={() => setActiveTab('all')}>All Characters (16)</TabsTrigger>
             <TabsTrigger value="favorites" className="flex items-center gap-2" onClick={() => setActiveTab('favorites')}>
