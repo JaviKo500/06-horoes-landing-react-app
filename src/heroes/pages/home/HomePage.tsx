@@ -3,17 +3,16 @@ import {
 } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSearchParams } from "react-router"
+import { useMemo } from "react"
 
 import { CustomJumbotron } from "@/components/custom/CustomJumbotron"
 import { HeroStats } from "@/heroes/components/HeroStats"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
-import { useQuery } from "@tanstack/react-query"
 
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumb } from "@/components/custom/CustomBreadcrumb"
-import { getHeroByPageAction } from "@/heroes/actions/get-hero-by-page.action"
-import { useMemo } from "react"
 import { useHeroSummary } from "../hooks/useHeroSummary"
+import { usePaginationHeroes } from "../hooks/usePaginationHeroes"
 
 export const HomePage = () => {
 
@@ -28,11 +27,7 @@ export const HomePage = () => {
     return validTabs.includes(activeTab) ? activeTab : 'all';
   }, [ activeTab ] );
 
-  const { data: heroesResponse } = useQuery({
-    queryKey: [ 'heroes', { page, limit } ],
-    queryFn: () => getHeroByPageAction( page, limit ),
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
+  const { data: heroesResponse } = usePaginationHeroes({ page, limit });
 
   const { data: summaryData } = useHeroSummary();
 
@@ -59,7 +54,6 @@ export const HomePage = () => {
 
         {/* Stats Dashboard */}
         <HeroStats />
-
 
         {/* Tabs */}
         <Tabs value={selectedTab} className="mb-8">
