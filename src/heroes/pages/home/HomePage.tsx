@@ -13,6 +13,7 @@ import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumb } from "@/components/custom/CustomBreadcrumb"
 import { getHeroByPageAction } from "@/heroes/actions/get-hero-by-page.action"
 import { useMemo } from "react"
+import { useHeroSummary } from "../hooks/useHeroSummary"
 
 export const HomePage = () => {
 
@@ -32,6 +33,8 @@ export const HomePage = () => {
     queryFn: () => getHeroByPageAction( page, limit ),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
+
+  const { data: summaryData } = useHeroSummary();
 
   console.log('<--------------- JK HomePage --------------->');
   console.log(heroesResponse);
@@ -61,13 +64,13 @@ export const HomePage = () => {
         {/* Tabs */}
         <Tabs value={selectedTab} className="mb-8">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="all" onClick={() => setActiveTab('all')}>All Characters (16)</TabsTrigger>
+            <TabsTrigger value="all" onClick={() => setActiveTab('all')}>All Characters ({summaryData?.totalHeroes ?? 0})</TabsTrigger>
             <TabsTrigger value="favorites" className="flex items-center gap-2" onClick={() => setActiveTab('favorites')}>
               <Heart className="h-4 w-4" />
               Favorites (3)
             </TabsTrigger>
-            <TabsTrigger value="heroes" onClick={() => setActiveTab('heroes')}>Heroes (12)</TabsTrigger>
-            <TabsTrigger value="villains" onClick={() => setActiveTab('villains')}>Villains (2)</TabsTrigger>
+            <TabsTrigger value="heroes" onClick={() => setActiveTab('heroes')}>Heroes ({summaryData?.heroCount ?? 0})</TabsTrigger>
+            <TabsTrigger value="villains" onClick={() => setActiveTab('villains')}>Villains ({summaryData?.villainCount ?? 0})</TabsTrigger>
           </TabsList>
           <TabsContent value="all" >
             {/* Character Grid */}
