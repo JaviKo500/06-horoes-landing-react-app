@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useState, type PropsWithChildren } from "react";
+import { createContext, useEffect, useState, type PropsWithChildren } from "react";
 import type { Hero } from "../types/hero.interface";
 
 interface FavoriteHeroContext {
@@ -14,8 +14,13 @@ interface FavoriteHeroContext {
 
 export const FavoriteHeroContext = createContext<FavoriteHeroContext>({} as FavoriteHeroContext);
 
+const getFavoritesFromLocalStorage = (): Hero[] => {
+  const favorites = localStorage.getItem('favorites');
+  return favorites ? JSON.parse(favorites) : [];
+}
+
 export const FavoriteHeroProvider = ({children}: PropsWithChildren) => {
-  const [ favorites, setFavorites ] = useState<Hero[]>([]);
+  const [ favorites, setFavorites ] = useState<Hero[]>(getFavoritesFromLocalStorage());
 
   const toggleFavorite = (hero: Hero) => {
     const heroExist = favorites.find( h => h.id === hero.id );
@@ -25,6 +30,13 @@ export const FavoriteHeroProvider = ({children}: PropsWithChildren) => {
     }
     setFavorites([ ...favorites, hero ]);
   }
+
+  useEffect(
+    () => {
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    },
+    [ favorites ]
+  );
 
   return (
     <FavoriteHeroContext
