@@ -1,9 +1,9 @@
 import {
   Heart,
 } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSearchParams } from "react-router"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { CustomJumbotron } from "@/components/custom/CustomJumbotron"
 import { HeroStats } from "@/heroes/components/HeroStats"
@@ -13,6 +13,7 @@ import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumb } from "@/components/custom/CustomBreadcrumb"
 import { useHeroSummary } from "../hooks/useHeroSummary"
 import { usePaginationHeroes } from "../hooks/usePaginationHeroes"
+import { FavoriteHeroContext } from "@/heroes/context/FavoriteHeroContext"
 
 export const HomePage = () => {
 
@@ -22,6 +23,8 @@ export const HomePage = () => {
   const page = parseInt( searchParams.get('page') || '1' );
   const limit = parseInt( searchParams.get('limit') || '6' );
   const category = searchParams.get('category') || 'all';
+
+  const { favoriteCount, favorites } = use(FavoriteHeroContext);
 
   const selectedTab = useMemo(() => {
     const validTabs = ['all', 'favorites', 'heroes', 'villains'];
@@ -38,8 +41,6 @@ export const HomePage = () => {
 
   const { data: summaryData } = useHeroSummary();
 
-  console.log('<--------------- JK HomePage --------------->');
-  console.log(heroesResponse);
   // useEffect(() => {
   //   getHeroByPageAction().then();
   // }, [])
@@ -71,7 +72,7 @@ export const HomePage = () => {
         <CustomJumbotron title="Superhero Universe" subtitle="Discover, explore, and manage your favorite superheroes and villains" />
 
         {/* Breadcrumb */}
-        <CustomBreadcrumb  currentPage=""  breadcrumbs={[]}/>
+        <CustomBreadcrumb  currentPage="Heroes"  breadcrumbs={[]}/>
 
         {/* Stats Dashboard */}
         <HeroStats />
@@ -82,7 +83,7 @@ export const HomePage = () => {
             <TabsTrigger value="all" onClick={() => setActiveTab('all')}>All Characters ({summaryData?.totalHeroes ?? 0})</TabsTrigger>
             <TabsTrigger value="favorites" className="flex items-center gap-2" onClick={() => setActiveTab('favorites')}>
               <Heart className="h-4 w-4" />
-              Favorites (3)
+              Favorites ({favoriteCount})
             </TabsTrigger>
             <TabsTrigger value="heroes" onClick={() => setActiveTab('heroes')}>Heroes ({summaryData?.heroCount ?? 0})</TabsTrigger>
             <TabsTrigger value="villains" onClick={() => setActiveTab('villains')}>Villains ({summaryData?.villainCount ?? 0})</TabsTrigger>
@@ -93,7 +94,7 @@ export const HomePage = () => {
           </TabsContent>
           <TabsContent value="favorites">
             {/* Character Grid */}
-            <HeroGrid />
+            <HeroGrid heroes={favorites}/>
           </TabsContent>
           <TabsContent value="heroes">
             {/* Character Grid */}
@@ -106,7 +107,11 @@ export const HomePage = () => {
         </Tabs>
 
         {/* Pagination */}
-        <CustomPagination totalPages={heroesResponse?.pages ?? 1}/>
+        {
+          selectedTab !== 'favorites' && (
+            <CustomPagination totalPages={heroesResponse?.pages ?? 1}/>
+          )
+        }
       </>
   )
 }
