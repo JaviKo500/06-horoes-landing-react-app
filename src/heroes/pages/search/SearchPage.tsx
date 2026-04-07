@@ -10,10 +10,11 @@ import { useSearchParams } from "react-router";
 const SearchPage = () => {
   const [searchParams ] = useSearchParams();
   const query = searchParams.get('query') || '';
+  const strength = searchParams.get('strength') || '';
 
   const { data: heroes } = useQuery({
-    queryKey: ['search', {query}],
-    queryFn: () => searchHeroesAction({ name: query }),
+    queryKey: ['search', {query, strength}],
+    queryFn: () => searchHeroesAction({ name: query, strength }),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
