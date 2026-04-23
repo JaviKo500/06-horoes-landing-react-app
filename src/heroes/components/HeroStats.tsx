@@ -9,7 +9,12 @@ import { FavoriteHeroContext } from "../context/FavoriteHeroContext"
 
 export const HeroStats = () => {
   const { data: summaryData } = useHeroSummary();
-  const { favoriteCount } = use(FavoriteHeroContext)
+  const { favoriteCount } = use(FavoriteHeroContext);;
+
+  if ( !summaryData ) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       <HeroStatCard 
