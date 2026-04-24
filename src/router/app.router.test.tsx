@@ -62,4 +62,12 @@ describe('App.router.test', () => {
 
     expect( await screen.findByTestId('search-page') ).toBeDefined();
   });
+
+  test( 'should redirect to home page if no path is provided', () => {
+    const router = createMemoryRouter( appRouter.routes, {
+      initialEntries: [ '/not-found-test' ]
+    });
+    render(<RouterProvider router={router} />);
+    expect( screen.getByTestId('home-page') ).toBeDefined();
+  });
 });
