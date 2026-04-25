@@ -135,6 +135,7 @@ exports[`HomePage.test > should render home page with default props 1`] = `
           />
         </svg>
         Favorites (
+        0
         )
       </button>
       <button
