@@ -12,15 +12,11 @@ const SearchPage = () => {
   const query = searchParams.get('query') || '';
   const strength = searchParams.get('strength') || '';
 
-  const { data: heroes } = useQuery({
+  const { data: heroes = [] } = useQuery({
     queryKey: ['search', {query, strength}],
     queryFn: () => searchHeroesAction({ name: query, strength }),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
-
-  if ( !heroes) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <>
