@@ -12,7 +12,7 @@ interface SearchHeroesOptions {
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export const searchHeroesAction = async ( options: SearchHeroesOptions ) => {
+export const searchHeroesAction = async ( options: SearchHeroesOptions ): Promise<Hero[]> => {
   const { name, team, category, universe, status, strength } = options;
   if ( !name && !team && !category && !universe && !status && !strength ) {
     return [];
