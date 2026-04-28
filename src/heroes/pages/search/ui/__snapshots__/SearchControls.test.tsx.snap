@@ -176,6 +176,7 @@ exports[`SearchControls.test > should render search controls with default props 
     class="flex w-full flex-col"
     data-orientation="vertical"
     data-slot="accordion"
+    data-testid="accordion"
   >
     <div
       class="not-last:border-b"

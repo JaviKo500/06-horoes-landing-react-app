@@ -76,7 +76,7 @@ export const SearchControls = () => {
           </Button>
         </div>
       </div>
-      <Accordion type="single" collapsible value={activeAccordion}>
+      <Accordion type="single" collapsible value={activeAccordion} data-testid="accordion">
         <AccordionItem value="advanced-filters">
           {/* <AccordionTrigger>Is it accessible?</AccordionTrigger> */}
           <AccordionContent>

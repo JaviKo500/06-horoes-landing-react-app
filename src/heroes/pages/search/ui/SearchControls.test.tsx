@@ -43,4 +43,31 @@ describe('SearchControls.test', () => {
     
     expect( input.getAttribute('value') ).toBe('Batman');
   });
+
+  test( 'should change params strength when slider change', () => {
+    renderSearchControls(['/?query=Batman&accordion-active=advanced-filters']);
+    const slider = screen.getByRole('slider');
+
+    expect( slider.getAttribute('aria-valuenow') ).toBe('0');
+    
+    fireEvent.keyDown(slider, { key: 'ArrowRight' }  )
+    
+    expect( slider.getAttribute('aria-valuenow') ).toBe('1');
+  });
+
+  test( 'should accordion be open when active-accordion param is set', () => {
+    renderSearchControls(['/?query=Batman&accordion-active=advanced-filters']);
+    const accordion= screen.getByTestId('accordion');
+    const accordionItem = accordion.querySelector('div');
+
+    expect( accordionItem?.getAttribute('data-state') ).toBe('open');
+  });
+
+  test( 'should accordion be closed when active-accordion param is set', () => {
+    renderSearchControls(['/?query=Batman&accordion-active=advanced-filters']);
+    const accordion= screen.getByTestId('accordion');
+    const accordionItem = accordion.querySelector('div');
+
+    expect( accordionItem?.getAttribute('data-state') ).toBe('open');
+  });
 });
